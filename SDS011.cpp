@@ -1,8 +1,12 @@
 #include <SoftwareSerial.h>
 #include <NovaSDS011.h>
+#include "sensordata.h"
 
 #define SDS_PIN_RX 16
 #define SDS_PIN_TX 17
+
+float levelP25; // P2.5 level
+float levelP10; // P10 level
 
 NovaSDS011 sds011;
 
@@ -212,10 +216,11 @@ void loopSDS(void)
   QuerryError err = sds011.queryData(p25, p10);
   if (err == QuerryError::no_error)
   {
-    Serial.println(String(millis() / 1000) + "s:PM2.5=" + String(p25) + ", PM10=" + String(p10));
-    delay(60000);
+    levelP25 = p25;
+    levelP10 = p10;
+    //Serial.println(String(millis() / 1000) + "s:PM2.5=" + String(p25) + ", PM10=" + String(p10));
   } else {
-    Serial.print("Could not read values from sensor, reason: ");
-	printError(err);
+    //Serial.print("Could not read values from sensor, reason: ");
+	  //printError(err);
   }
 }
